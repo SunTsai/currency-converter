@@ -4,21 +4,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-
-	"suntsai/currency-converter/util"
 )
 
 type Server struct {
 	router *gin.Engine
-	rates  util.ExchangeRates
+	cache  Cache
 }
 
-func NewServer(rates util.ExchangeRates) (*Server, error) {
+func NewServer(cache Cache) (*Server, error) {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("currency", validCurrency)
 	}
 
-	server := &Server{rates: rates}
+	server := &Server{cache: cache}
 	server.setupRouter()
 	return server, nil
 }

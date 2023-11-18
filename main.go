@@ -16,12 +16,8 @@ func main() {
 	}
 	gin.SetMode(config.GinMode)
 
-	exchangeRates, err := util.LoadExchangeRates(".")
-	if err != nil {
-		log.Fatal("Failed to load the exchange rates: ", err)
-	}
-
-	server, err := api.NewServer(exchangeRates)
+	rates := api.NewExchangeRates()
+	server, err := api.NewServer(rates)
 	if err != nil {
 		log.Fatal("Failed to create the server: ", err)
 	}

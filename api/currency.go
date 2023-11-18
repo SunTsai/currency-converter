@@ -27,7 +27,12 @@ func (server *Server) convertCurrency(ctx *gin.Context) {
 		return
 	}
 
-	rate := server.rates[req.Source][req.Target]
+	rates, err := server.cache.ExchangeRates()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+	}
+
+	rate := rates[req.Source][req.Target]
 	targetAmount := float64(req.Amount) * rate
 	formatedAmount := formatAmount(targetAmount)
 

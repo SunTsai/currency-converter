@@ -2,7 +2,6 @@ package api
 
 import (
 	"os"
-	"suntsai/currency-converter/util"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -15,10 +14,8 @@ func TestMain(m *testing.M) {
 }
 
 func newTestServer(t *testing.T) *Server {
-	exchangeRates, err := util.LoadExchangeRates("..")
-	require.NoError(t, err)
-
-	server, err := NewServer(exchangeRates)
+	rates := NewExchangeRates()
+	server, err := NewServer(rates)
 	require.NoError(t, err)
 	return server
 }
